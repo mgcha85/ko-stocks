@@ -1,0 +1,9 @@
+xlrd
+openpyxl
+pandas
+yfinance
+pykrx
+tqdm
+PyYAML
+catboost
+scikit-learn
