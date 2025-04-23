@@ -6,9 +6,10 @@ import sqlite3
 con = sqlite3.connect('kr_stocklist.sqlite3')
 
 ## Step 1: load results
-df_result = pd.concat(
-    [pd.read_excel('results/KQ.results.xlsx'), pd.read_excel('results/KS.results.xlsx')]
-).sort_values(by='buy_date')
+# df_result = pd.concat(
+#     [pd.read_excel('results/KQ.results.xlsx'), pd.read_excel('results/KS.results.xlsx')]
+# ).sort_values(by='buy_date')
+df_result = pd.read_excel('results/results.xlsx').sort_values(by='buy_date')
 
 dfs = {ticker: pd.read_sql(f"SELECT * FROM '{ticker}'", con) for ticker in df_result['ticker'].unique()}
 
