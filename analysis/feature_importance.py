@@ -19,19 +19,18 @@ def feature_elimination_model(
         label_encoder: profit_cat 레이블을 인코딩한 LabelEncoder
     """
     # 1) profit_pct 결측 제거 & 카테고리화
-    df = df[df['profit_pct'].notnull()].copy()
-    df['profit_cat'] = pd.qcut(
-        df['profit_pct'],
-        q=3,
-        labels=['하', '중', '상']
+    df['profit_cat'] = pd.cut(
+        df['duration'],
+        bins=3,
+        labels=[0, 1, 2]
     )
-
+    
     # 2) 레이블 인코딩
     le = LabelEncoder()
     y = le.fit_transform(df['profit_cat'])
 
     # 3) 가능한 모든 수치형 피처 선택 (profit_pct 제외)
-    X = df.select_dtypes(include='number').drop(columns=['profit_pct'])
+    X = df.select_dtypes(include='number').drop(columns=['duration'])
 
     # 4) 학습/테스트 분할 (여기서는 RFECV에 전체 데이터를 사용하므로 분할은 선택적)
     #    StratifiedKFold 로 CV 전략 정의
@@ -75,6 +74,7 @@ def feature_elimination_model(
 if __name__ == '__main__':
     # 예시: 백테스트 결과 불러오기
     df_result = pd.read_excel("results/results.xlsx")
-    df_result.drop(['sell_price', 'sell_date', 'buy_date', 'duration', 'order'], axis=1, inplace=True)
-    df_result = df_result[['buy_price', 'cor', 'vrate', 'mapct', 'order', '시가총액', 'days_since_max_high', 'PBR']]
+    df_result = df_result[df_result['profit_pct'].notnull()].copy()
+    df_result.drop(['sell_price', 'sell_date', 'buy_date', 'profit_pct', 'order'], axis=1, inplace=True)
+    # df_result = df_result[['buy_price', 'cor', 'vrate', 'mapct', '시가총액', 'days_since_max_high', 'PBR', '거래대금', 'BPS', 'DIV', 'PER', 'EPS', 'DPS']]
     selector, label_encoder = feature_elimination_model(df_result)

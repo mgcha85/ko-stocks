@@ -68,7 +68,7 @@ if __name__ == '__main__':
     
     # days_since_max_high, kospi_index 같은 추가 피처가 있다 가정
     # cor, vrate, mapct, days_since_max_high, kospi_index 등
-    features = ['buy_price', 'cor', 'vrate', 'mapct', 'order', '시가총액', 'days_since_max_high', 'PBR']
+    features = ['buy_price', 'cor', 'vrate', 'mapct', '거래대금', '시가총액', 'days_since_max_high', 'BPS', 'PER', 'PBR', 'DIV']
 
     model = train_profit_category_model(
         df_result,

@@ -7,3 +7,5 @@ tqdm
 PyYAML
 catboost
 scikit-learn
+PyWavelets
+EMD-signal

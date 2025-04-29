@@ -120,6 +120,8 @@ def run_backtest(root, screener_data, dfs, n_split=4):
     database_path = os.path.join(root, "fundamental.sqlite3")
     conn_fund = sqlite3.connect(database_path)
 
+    print(screener_data.head())
+
     results = []
     hold_list = []
     for date, each in screener_data.groupby('Date'):
@@ -131,7 +133,7 @@ def run_backtest(root, screener_data, dfs, n_split=4):
             ticker = row['ticker']
             cor = row['cor']
             vrate = row['vrate']
-            mapct = row['mapct']
+            mapct = row['ma200pct']
 
             if ticker in hold_list:
                 continue
@@ -300,7 +302,7 @@ def fetch_index_close(date_str: str, market: str = 'KOSPI') -> float:
 
 
 if __name__ == '__main__':
-    root = "D:/Users/Mingyu/pythonProjects/kiwoom-client/sqlite3"
+    root = "./sqlite3"
     
     # SQLite 데이터베이스 연결
     database_path = os.path.join(root, "screener.sqlite3")
@@ -344,7 +346,7 @@ if __name__ == '__main__':
 
         contents += each
         
-    screener = pd.DataFrame(contents, columns=['Date', 'ticker', 'cor', 'vrate', 'mapct'])
+    screener = pd.DataFrame(contents, columns=['Date', 'ticker', 'cor', 'vrate', 'ma200pct'])
 
     conn.close()
     conn_scr.close()
